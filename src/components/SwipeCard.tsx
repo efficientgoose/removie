@@ -1,4 +1,5 @@
 import { motion, useMotionValue, useTransform, useAnimation } from 'framer-motion';
+import type { PanInfo } from 'framer-motion';
 import type { Movie } from '../types';
 import { forwardRef, useImperativeHandle, useEffect } from 'react';
 
@@ -15,10 +16,10 @@ export interface SwipeCardRef {
 export const SwipeCard = forwardRef<SwipeCardRef, Props>(({ movie, onSwipe, index }, ref) => {
   const x = useMotionValue(0);
   const controls = useAnimation();
-  
+
   const rotate = useTransform(x, [-200, 200], [-25, 25]);
   const opacity = useTransform(x, [-200, -100, 0, 100, 200], [0, 1, 1, 1, 0]);
-  
+
   // Visual Feedback - appear quicker
   const likeOpacity = useTransform(x, [10, 60], [0, 1]);
   const nopeOpacity = useTransform(x, [-10, -60], [0, 1]);
@@ -31,7 +32,7 @@ export const SwipeCard = forwardRef<SwipeCardRef, Props>(({ movie, onSwipe, inde
     }
   }));
 
-  const handleDragEnd = async (_: any, info: any) => {
+  const handleDragEnd = async (_event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
     const offset = info.offset.x;
     const velocity = info.velocity.x;
 
@@ -47,7 +48,6 @@ export const SwipeCard = forwardRef<SwipeCardRef, Props>(({ movie, onSwipe, inde
   };
 
   useEffect(() => {
-    console.log("SwipeCard MOUNTED", { index, movie: movie.title });
     controls.start({ scale: 1, y: 0, opacity: 1 });
   }, [controls, index, movie.title]);
 
@@ -62,7 +62,7 @@ export const SwipeCard = forwardRef<SwipeCardRef, Props>(({ movie, onSwipe, inde
       initial={{ scale: 1, y: 0, opacity: 1 }}
       transition={{ duration: 0.3 }}
     >
-      <div className="relative w-full h-full bg-zinc-900 rounded-3xl overflow-hidden shadow-2xl border border-zinc-800 cursor-grab active:cursor-grabbing">
+      <div className="relative w-full h-full bg-zinc-900/90 backdrop-blur-2xl rounded-3xl overflow-hidden shadow-[0_16px_64px_rgba(0,0,0,0.6)] border border-white/[0.08] cursor-grab active:cursor-grabbing">
         <img 
           src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} 
           alt={movie.title}

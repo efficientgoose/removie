@@ -50,10 +50,7 @@ export const useGameStore = create<GameStore>()(
       loadMovies: async (vibeParams) => {
         const { apiKey } = get();
         set({ isLoading: true, error: null });
-        
-        console.log("Loading movies with params:", vibeParams);
-        console.log("API Key present:", !!apiKey);
-        
+
         try {
           const { data } = await axios.get(`${BASE_URL}/discover/movie`, {
             params: {
@@ -79,12 +76,8 @@ export const useGameStore = create<GameStore>()(
 
           set({ movies: validMovies, liked: [], currentIndex: 0, view: 'SWIPE' });
         } catch (err: any) {
-          console.error("API Error:", err);
-          console.error("Response:", err.response?.data);
-          console.error("Status:", err.response?.status);
-          
           let errorMessage = "Failed to load movies. ";
-          
+
           if (err.response?.status === 401) {
             errorMessage += "Invalid API key.";
           } else if (err.response?.status === 404) {
@@ -96,7 +89,7 @@ export const useGameStore = create<GameStore>()(
           } else {
             errorMessage += "Check your connection and API key.";
           }
-          
+
           set({ error: errorMessage });
         } finally {
           set({ isLoading: false });
@@ -115,8 +108,7 @@ export const useGameStore = create<GameStore>()(
         if (currentIndex >= movies.length - 1) {
           const newLikedCount = direction === 'right' ? liked.length + 1 : liked.length;
           if (newLikedCount === 0) {
-            alert("No matches! Try again.");
-            set({ view: 'VIBES' });
+            set({ error: "No matches! Try selecting a different vibe." });
           } else {
             set({ view: 'SPIN' });
           }
