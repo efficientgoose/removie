@@ -55,9 +55,9 @@ export function SwipeView() {
             />
           </div>
 
-            {/* Next Card (Background) */}
+            {/* Next Card (Background) - enhanced stack effect */}
             {nextMovie && (
-              <div className="absolute inset-0 transform scale-95 opacity-50 translate-y-4">
+              <div className="absolute inset-0 transform scale-95 opacity-60 translate-y-4 transition-all duration-300 ease-out">
                 <SwipeCard
                   key={nextMovie.id}
                   movie={nextMovie}

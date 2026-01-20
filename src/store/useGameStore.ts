@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import axios from 'axios';
-import type { Movie, GameState, GameMode } from '../types';
+import type { Movie, GameState } from '../types';
 
 // Configuration
 const BASE_URL = "https://api.themoviedb.org/3";
@@ -10,7 +10,6 @@ interface GameStore {
   // State
   apiKey: string;
   view: GameState;
-  gameMode: GameMode | null;
   movies: Movie[];
   liked: Movie[];
   currentIndex: number;
@@ -19,9 +18,7 @@ interface GameStore {
   error: string | null;
 
   // Actions
-  setApiKey: (key: string) => void;
   setView: (view: GameState) => void;
-  setGameMode: (mode: GameMode) => void;
   loadMovies: (vibeParams: Record<string, any>) => Promise<void>;
   swipe: (direction: 'left' | 'right') => void;
   spinWheel: () => void;
@@ -31,9 +28,8 @@ interface GameStore {
 export const useGameStore = create<GameStore>()(
   persist(
     (set, get) => ({
-      apiKey: "",
-      view: 'SETUP',
-      gameMode: null,
+      apiKey: "a73d27eefe93597c426ca59b7fd3f384",
+      view: 'HOME',
       movies: [],
       liked: [],
       currentIndex: 0,
@@ -41,11 +37,7 @@ export const useGameStore = create<GameStore>()(
       isLoading: false,
       error: null,
 
-      setApiKey: (key) => set({ apiKey: key, view: 'HOME' }),
-      
       setView: (view) => set({ view }),
-
-      setGameMode: (mode) => set({ gameMode: mode, view: 'VIBES' }),
 
       loadMovies: async (vibeParams) => {
         const { apiKey } = get();
@@ -129,11 +121,11 @@ export const useGameStore = create<GameStore>()(
         }, 1500);
       },
 
-      resetGame: () => set({ view: 'HOME', gameMode: null, liked: [], movies: [], currentIndex: 0, winner: null })
+      resetGame: () => set({ view: 'HOME', liked: [], movies: [], currentIndex: 0, winner: null })
     }),
     {
       name: 'moviematch-storage', // unique name for localStorage
-      partialize: (state) => ({ apiKey: state.apiKey }), // Only persist API key
+      partialize: () => ({ }), // Do not persist API key anymore since it's hardcoded
     }
   )
 );

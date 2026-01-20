@@ -1,5 +1,4 @@
 import { useGameStore } from '../store/useGameStore';
-import { Settings } from 'lucide-react';
 import { VIBES } from '../config/vibes';
 
 export function VibesView() {
@@ -13,12 +12,6 @@ export function VibesView() {
       <div className="w-full max-w-md p-6 flex flex-col h-full relative z-10">
         <div className="flex justify-between items-center mb-8">
           <h1 className="text-2xl font-bold">Select Vibe</h1>
-          <button
-            onClick={() => store.setApiKey("")}
-            className="p-2 hover:bg-white/[0.08] rounded-lg transition-all"
-          >
-            <Settings className="text-zinc-400 hover:text-zinc-200 transition-colors" size={20} />
-          </button>
         </div>
         <div className="grid grid-cols-2 gap-4 flex-1 content-start">
           {VIBES.map((vibe) => (

@@ -1,5 +1,5 @@
 import { useGameStore } from '../store/useGameStore';
-import { Settings, User, Users } from 'lucide-react';
+import { Users } from 'lucide-react';
 import ntflxBgUs from '../assets/ntflx_bg_usa.jpg';
 
 export function HomeView() {
@@ -30,33 +30,18 @@ export function HomeView() {
         <div className="absolute w-64 h-64 bg-purple-500/30 rounded-full blur-3xl -translate-y-20"></div>
         <div className="absolute w-48 h-48 bg-pink-500/30 rounded-full blur-3xl translate-y-32 translate-x-20"></div>
 
-        <h1 className="text-6xl font-black mb-4 bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent relative z-10">MovieMatch</h1>
-        <p className="text-zinc-400 mb-12 text-center relative z-10">Choose your game mode</p>
+        <h1 className="text-6xl font-black mb-4 bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent relative z-10">ReMovie</h1>
+          <div className="w-full space-y-4 mb-8 relative z-10">
+            <button
+              onClick={() => store.setView('VIBES')}
+              className="w-full p-6 bg-white/[0.15] backdrop-blur-2xl rounded-2xl border border-white/[0.2] hover:bg-white/[0.25] hover:scale-[1.02] transition-all shadow-[inset_0_1px_0_0_rgba(255,255,255,0.2),0_8px_32px_rgba(0,0,0,0.4)] active:scale-[0.98] flex items-center justify-center gap-3"
+            >
+              <Users size={24} />
+              <span className="text-xl font-bold">Start Swiping</span>
+            </button>
+          </div>
 
-        <div className="w-full space-y-4 mb-8 relative z-10">
-          <button
-            onClick={() => store.setGameMode('SINGLE')}
-            className="w-full p-6 bg-white/[0.15] backdrop-blur-2xl rounded-2xl border border-white/[0.2] hover:bg-white/[0.25] hover:scale-[1.02] transition-all shadow-[inset_0_1px_0_0_rgba(255,255,255,0.2),0_8px_32px_rgba(0,0,0,0.4)] active:scale-[0.98] flex items-center justify-center gap-3"
-          >
-            <User size={24} />
-            <span className="text-xl font-bold">Single Player</span>
-          </button>
 
-          <button
-            onClick={() => store.setGameMode('MULTI')}
-            className="w-full p-6 bg-white/[0.15] backdrop-blur-2xl rounded-2xl border border-white/[0.2] hover:bg-white/[0.25] hover:scale-[1.02] transition-all shadow-[inset_0_1px_0_0_rgba(255,255,255,0.2),0_8px_32px_rgba(0,0,0,0.4)] active:scale-[0.98] flex items-center justify-center gap-3"
-          >
-            <Users size={24} />
-            <span className="text-xl font-bold">Multiplayer</span>
-          </button>
-        </div>
-
-        <button
-          onClick={() => store.setView('SETUP')}
-          className="text-zinc-400 hover:text-zinc-200 text-sm transition-colors flex items-center gap-2 px-4 py-2 rounded-lg hover:bg-white/[0.1] backdrop-blur-xl relative z-10"
-        >
-          <Settings size={16} /> Change API Key
-        </button>
       </div>
     </div>
   );

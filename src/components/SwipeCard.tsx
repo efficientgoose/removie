@@ -17,17 +17,29 @@ export const SwipeCard = forwardRef<SwipeCardRef, Props>(({ movie, onSwipe, inde
   const x = useMotionValue(0);
   const controls = useAnimation();
 
-  const rotate = useTransform(x, [-200, 200], [-25, 25]);
+  // Enhanced rotation with more dynamic range
+  const rotate = useTransform(x, [-300, 0, 300], [-30, 0, 30]);
   const opacity = useTransform(x, [-200, -100, 0, 100, 200], [0, 1, 1, 1, 0]);
 
-  // Visual Feedback - appear quicker
-  const likeOpacity = useTransform(x, [10, 60], [0, 1]);
-  const nopeOpacity = useTransform(x, [-10, -60], [0, 1]);
+  // Visual Feedback - more gradual appearance with scale
+  const likeOpacity = useTransform(x, [0, 100], [0, 1]);
+  const likeScale = useTransform(x, [0, 100], [0.8, 1.1]);
+  const nopeOpacity = useTransform(x, [-100, 0], [1, 0]);
+  const nopeScale = useTransform(x, [-100, 0], [1.1, 0.8]);
 
   useImperativeHandle(ref, () => ({
     swipe: async (dir) => {
-      const targetX = dir === 'right' ? 500 : -500;
-      await controls.start({ x: targetX, transition: { duration: 0.3 } });
+      const targetX = dir === 'right' ? 600 : -600;
+      const targetRotate = dir === 'right' ? 30 : -30;
+      await controls.start({
+        x: targetX,
+        rotate: targetRotate,
+        opacity: 0,
+        transition: {
+          duration: 0.4,
+          ease: [0.32, 0.72, 0, 1]
+        }
+      });
       onSwipe(dir);
     }
   }));
@@ -37,13 +49,38 @@ export const SwipeCard = forwardRef<SwipeCardRef, Props>(({ movie, onSwipe, inde
     const velocity = info.velocity.x;
 
     if (offset > 100 || velocity > 500) {
-      await controls.start({ x: 500, transition: { duration: 0.2 } });
+      await controls.start({
+        x: 600,
+        rotate: 30,
+        opacity: 0,
+        transition: {
+          duration: 0.3,
+          ease: [0.32, 0.72, 0, 1]
+        }
+      });
       onSwipe('right');
     } else if (offset < -100 || velocity < -500) {
-      await controls.start({ x: -500, transition: { duration: 0.2 } });
+      await controls.start({
+        x: -600,
+        rotate: -30,
+        opacity: 0,
+        transition: {
+          duration: 0.3,
+          ease: [0.32, 0.72, 0, 1]
+        }
+      });
       onSwipe('left');
     } else {
-      controls.start({ x: 0, transition: { type: "spring", stiffness: 300, damping: 20 } });
+      controls.start({
+        x: 0,
+        rotate: 0,
+        transition: {
+          type: "spring",
+          stiffness: 400,
+          damping: 30,
+          mass: 0.8
+        }
+      });
     }
   };
 
@@ -70,20 +107,20 @@ export const SwipeCard = forwardRef<SwipeCardRef, Props>(({ movie, onSwipe, inde
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent" />
 
-        {/* EMOJI OVERLAYS - text-8xl, appear quicker */}
-        <motion.div 
-          style={{ opacity: likeOpacity }} 
-          className="absolute top-8 right-8 transform rotate-12"
+        {/* EMOJI OVERLAYS - enhanced with scale animation */}
+        <motion.div
+          style={{ opacity: likeOpacity, scale: likeScale }}
+          className="absolute top-8 right-8 transform rotate-12 origin-center"
         >
-          <span className="text-8xl filter drop-shadow-[0_4px_20px_rgba(0,0,0,1)] drop-shadow-[0_0_40px_rgba(255,255,255,0.5)]">
+          <span className="text-8xl filter drop-shadow-[0_4px_20px_rgba(0,0,0,1)] drop-shadow-[0_0_40px_rgba(34,197,94,0.6)]">
             😍
           </span>
         </motion.div>
-        <motion.div 
-          style={{ opacity: nopeOpacity }} 
-          className="absolute top-8 left-8 transform -rotate-12"
+        <motion.div
+          style={{ opacity: nopeOpacity, scale: nopeScale }}
+          className="absolute top-8 left-8 transform -rotate-12 origin-center"
         >
-          <span className="text-8xl filter drop-shadow-[0_4px_20px_rgba(0,0,0,1)] drop-shadow-[0_0_40px_rgba(255,255,255,0.5)]">
+          <span className="text-8xl filter drop-shadow-[0_4px_20px_rgba(0,0,0,1)] drop-shadow-[0_0_40px_rgba(239,68,68,0.6)]">
             😴
           </span>
         </motion.div>

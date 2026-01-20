@@ -3,7 +3,6 @@ import { useGameStore } from './store/useGameStore';
 import confetti from 'canvas-confetti';
 
 // Views
-import { SetupView } from './views/SetupView';
 import { HomeView } from './views/HomeView';
 import { VibesView } from './views/VibesView';
 import { SwipeView } from './views/SwipeView';
@@ -13,13 +12,6 @@ import { WinnerView } from './views/WinnerView';
 function App() {
   const store = useGameStore();
   const confettiShownRef = useRef(false);
-
-  // Auto-skip setup if API key exists
-  useEffect(() => {
-    if (store.apiKey && store.view === 'SETUP') {
-      store.setView('HOME');
-    }
-  }, [store.apiKey, store.view, store.setView]);
 
   // Confetti Effect on Winner (prevent re-firing)
   useEffect(() => {
@@ -72,7 +64,6 @@ function App() {
   // View Router
   return (
     <>
-      {store.view === 'SETUP' && <SetupView />}
       {store.view === 'HOME' && <HomeView />}
       {store.view === 'VIBES' && <VibesView />}
       {store.view === 'SWIPE' && <SwipeView />}

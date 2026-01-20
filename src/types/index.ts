@@ -17,5 +17,3 @@ export interface Vibe {
 }
 
 export type GameState = 'SETUP' | 'HOME' | 'VIBES' | 'SWIPE' | 'SPIN' | 'WINNER';
-
-export type GameMode = 'SINGLE' | 'MULTI';
