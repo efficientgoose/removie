@@ -166,7 +166,7 @@ export default function ResultScreen() {
         <Animated.View style={revealStyle}>
           <View className="mx-6 mt-4 overflow-hidden rounded-3xl border border-zinc-700 bg-zinc-900">
             {heroBackdropUri ? (
-              <ImageBackground source={{ uri: heroBackdropUri }} blurRadius={18} className="h-72 w-full">
+              <ImageBackground source={{ uri: heroBackdropUri }} className="h-72 w-full">
                 <View className="h-full w-full bg-black/55 px-5 pb-5 pt-6">
                   <Animated.View style={badgeStyle}>
                     <View className="self-start rounded-full border border-emerald-300/50 bg-emerald-500/20 px-3 py-1">
